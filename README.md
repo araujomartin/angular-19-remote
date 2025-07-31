@@ -1,59 +1,47 @@
-# Angular19Mfe
+# Angular 19 Microfrontend with Native Federation
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
+This project is a microfrontend built with **Angular 19** and uses **Native Federation** for module federation. It is designed to be run with **Bun** as the package manager and runtime. The project also leverages **@angular/elements** to expose the main application as a web component.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- **Angular 19**: Latest Angular version for modern web development.
+- **Native Federation**: Uses [`@angular-architects/native-federation`](https://www.npmjs.com/package/@angular-architects/native-federation) to expose modules for remote consumption.
+- **@angular/elements**: Wraps the main app as a web component for easy integration.
+- **Bun**: Fast JavaScript runtime and package manager.
 
-```bash
-ng serve
-```
+## Remote Exposure
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+This microfrontend exposes its application as a remote module via Native Federation. It is intended to be imported and consumed by a shell application located in a separate repository:
 
-## Code scaffolding
+[Shell Application Repository](https://github.com/araujomartin/angular-mfe-poc)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Usage
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Install dependencies
 
 ```bash
-ng generate --help
+bun install
 ```
 
-## Building
-
-To build the project run:
+### Run the application
 
 ```bash
-ng build
+bun run start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Build the application
 
 ```bash
-ng test
+bun run build
 ```
 
-## Running end-to-end tests
+## Consuming from Shell
 
-For end-to-end (e2e) testing, run:
+The shell application (see link above) imports this microfrontend remotely using Native Federation. The exposed web component can be used in the shell or other host applications.
 
-```bash
-ng e2e
-```
+## Exposed Module
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- `./web-component`: Exposes the Angular app as a web component (`<angular-19-mfe>`).
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+> **Note:**  
+> In `web-component.ts`, before creating the Angular application, the code checks if `ngZone` is defined in the global scope. If present, it uses the parent application's `ngZone` instead of creating a new one. This prevents conflicts when the shell application already manages its own `ngZone`.
